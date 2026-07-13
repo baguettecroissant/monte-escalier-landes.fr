@@ -1,0 +1,35 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+---
+<Layout title="Mentions Légales — Monte-Escalier Landes" description="Consultez les mentions légales de notre site de mise en relation et de comparaison de monte-escaliers dans les Landes.">
+  <Breadcrumb items={[{ label: "Mentions légales" }]} />
+
+  <section style="padding: 60px 0; background: white;">
+    <div class="container" style="max-width: 800px; font-size:15px; line-height:1.6; color:var(--text-muted);">
+      <h1 style="font-size:28px; color:var(--text); margin-bottom:20px;">Mentions Légales</h1>
+      
+      <h3 style="color:var(--text); margin:20px 0 10px;">1. Édition du site</h3>
+      <p style="margin-bottom:15px;">
+        Le site internet <strong>monte-escalier-landes.fr</strong> est édité à des fins de démonstration commerciale dans le cadre d'activités d'affiliation et de Rank & Rent. Pour toute demande de retrait d'information ou de modification, veuillez prendre contact via l'adresse e-mail de l'hébergeur.
+      </p>
+
+      <h3 style="color:var(--text); margin:20px 0 10px;">2. Hébergement</h3>
+      <p style="margin-bottom:15px;">
+        Le site est hébergé par la société <strong>Cloudflare Inc.</strong>, dont le siège social est situé à :<br/>
+        101 Townsend St, San Francisco, CA 94107, États-Unis.<br/>
+        Téléphone : +1 (888) 993 5273.
+      </p>
+
+      <h3 style="color:var(--text); margin:20px 0 10px;">3. Propriété intellectuelle</h3>
+      <p style="margin-bottom:15px;">
+        Les textes, structures de bases de données et styles graphiques exclusifs de ce site sont protégés par le droit d'auteur. Toute reproduction ou distribution non autorisée est passible de poursuites. Les marques citées (Stannah, Handicare, Otolift, TK Home Solutions) restent la propriété exclusive de leurs détenteurs respectifs.
+      </p>
+
+      <h3 style="color:var(--text); margin:20px 0 10px;">4. Traitement des demandes</h3>
+      <p style="margin-bottom:15px;">
+        Ce site n'est pas un installateur direct mais propose un service gratuit de mise en relation et de comparaison de devis d'accessibilité PMR. Les utilisateurs sont informés de l'enregistrement de leurs informations conformément aux normes RGPD de la CNIL.
+      </p>
+    </div>
+  </section>
+</Layout>

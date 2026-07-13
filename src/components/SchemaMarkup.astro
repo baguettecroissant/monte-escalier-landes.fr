@@ -1,0 +1,86 @@
+---
+interface Props {
+  type: 'Organization' | 'LocalBusiness' | 'FAQPage' | 'Article';
+  data: any;
+}
+
+const { type, data } = Astro.props;
+
+let schema: any = {};
+
+if (type === 'Organization') {
+  schema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Monte-Escalier Landes",
+    "url": "https://monte-escalier-landes.fr",
+    "logo": "https://monte-escalier-landes.fr/favicon.svg",
+    "description": "Service de conseil et devis gratuit pour l'installation de monte-escaliers seniors et PMR dans les Landes (40).",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Mont-de-Marsan",
+      "postalCode": "40000",
+      "addressRegion": "Nouvelle-Aquitaine",
+      "addressCountry": "FR"
+    }
+  };
+} else if (type === 'LocalBusiness') {
+  schema = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": data.name || "Monte-Escalier Landes",
+    "description": data.description || "Installation et devis de monte-escaliers dans le département des Landes.",
+    "url": data.url || "https://monte-escalier-landes.fr",
+    "telephone": data.telephone || "05 58 00 00 00",
+    "priceRange": "€€",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": data.street || "",
+      "addressLocality": data.locality || "Mont-de-Marsan",
+      "postalCode": data.postalCode || "40000",
+      "addressRegion": "Landes",
+      "addressCountry": "FR"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": data.latitude || 43.8902,
+      "longitude": data.longitude || -0.5002
+    }
+  };
+} else if (type === 'FAQPage') {
+  schema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": data.map((item: any) => ({
+      "@type": "Question",
+      "name": item.q,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": item.a
+      }
+    }))
+  };
+} else if (type === 'Article') {
+  schema = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": data.title,
+    "description": data.description,
+    "image": data.image ? `https://monte-escalier-landes.fr${data.image}` : "https://monte-escalier-landes.fr/images/hero-monte-escalier-landes.png",
+    "datePublished": data.publishDate || "2026-07-13",
+    "author": {
+      "@type": "Person",
+      "name": data.author || "Conseiller Mobilité Senior Landes"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Monte-Escalier Landes",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://monte-escalier-landes.fr/favicon.svg"
+      }
+    }
+  };
+}
+---
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />

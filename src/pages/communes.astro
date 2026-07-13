@@ -1,0 +1,56 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import communes from '../data/communes.json';
+
+const activeTab = 'communes';
+
+// Group communes by intercommunalite / region
+const grouped = communes.reduce((acc, c) => {
+  const groupName = c.intercommunalite || "Agglomérations Thermales & Plaine de l'Adour";
+  if (!acc[groupName]) acc[groupName] = [];
+  acc[groupName].push(c);
+  return acc;
+}, {} as Record<string, typeof communes>);
+---
+
+<Layout title="Installateurs de Monte-Escalier par Commune dans les Landes (40)" description="Consultez l'annuaire complet des communes des Landes (40). Choisissez votre ville pour trouver des installateurs certifiés RGE proches de chez vous." activeTab={activeTab}>
+  <Breadcrumb items={[{ label: "Villes du 40" }]} />
+
+  <section style="background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); padding: 50px 0; color: white; text-align: center;">
+    <div class="container">
+      <span class="badge-pill" style="background:rgba(255,255,255,0.1); border-color:rgba(255,255,255,0.2); color:white; margin-bottom:15px;">
+        Annuaire Départemental 40
+      </span>
+      <h1 style="font-size:32px; color: white;">Monte-Escalier dans les Landes : Choisir sa Commune</h1>
+      <p style="font-size:18px; margin-top:10px; opacity:0.9; color: white;">
+        Retrouvez les solutions techniques d'accessibilité et les installateurs RGE par commune.
+      </p>
+    </div>
+  </section>
+
+  <section style="padding: 60px 0; background: white;">
+    <div class="container">
+      <p style="text-align:center; font-size:16px; color:var(--text-muted); max-width:800px; margin:0 auto 40px; line-height:1.6;">
+        Sélectionnez votre commune dans la liste ci-dessous pour consulter les opportunités d'aides locales (APA 40, MaPrimeAdapt'), les délais moyens d'installation constatés sur le secteur landais, et obtenir des offres de devis comparatives gratuites.
+      </p>
+
+      {Object.entries(grouped).map(([regionName, list]) => (
+        <div style="margin-bottom: 40px;">
+          <h2 style="font-size:22px; color:var(--primary); border-bottom:2px solid var(--border-color); padding-bottom:8px; margin-bottom:20px; font-weight:800;">
+            🌲 Secteur {regionName}
+          </h2>
+          <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap:15px;">
+            {list.map(c => (
+              <a href={`/monte-escalier-${c.slug}/`} style="text-decoration:none; display:flex; flex-direction:column; background:var(--bg); border:1.5px solid var(--border-color); padding:16px; border-radius:12px; transition:var(--transition); color:var(--text);">
+                <strong style="color:var(--text); font-size:16px;">{c.nom}</strong>
+                <span style="font-size:13px; color:var(--text-muted); margin-top:4px;">Code postal {c.codePostal}</span>
+                <span style="font-size:12px; color:var(--secondary); font-weight:bold; margin-top:8px;">Voir l'éligibilité &rarr;</span>
+              </a>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+</Layout>

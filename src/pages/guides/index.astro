@@ -1,0 +1,66 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+// Use import.meta.glob for compatibility across Astro and Cloudflare environments
+const posts = Object.values(import.meta.glob('../../content/guides/*.md', { eager: true })) as any[];
+const sortedPosts = posts.sort((a, b) => 
+  new Date(b.frontmatter.publishDate).getTime() - new Date(a.frontmatter.publishDate).getTime()
+);
+---
+
+<Layout title="Guides Pratiques Monte-Escalier Landes : Réglementation & Conseils" description="Retrouvez toute la réglementation fiscale, les astuces techniques et nos guides de prix pour le département des Landes (40).">
+  <Breadcrumb items={[{ label: "Guides & conseils" }]} />
+
+  <!-- Title section -->
+  <section style="background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); padding: 50px 0; color: white; text-align: center;">
+    <div class="container">
+      <span class="badge-pill" style="background:rgba(255,255,255,0.1); border-color:rgba(255,255,255,0.2); color:white; margin-bottom:15px;">
+        Conseils d'experts
+      </span>
+      <h1 style="font-size:32px; color: white;">Guides et conseils pour votre monte-escalier</h1>
+      <p style="font-size:18px; margin-top:10px; opacity:0.9; color: white;">
+        Retrouvez toute la réglementation fiscale, les astuces techniques et nos guides de prix pour les Landes.
+      </p>
+    </div>
+  </section>
+
+  <!-- Listing Grid -->
+  <section style="padding: 60px 0; background: white;">
+    <div class="container">
+      <div class="grid-3">
+        {sortedPosts.map(post => {
+          // Extract slug from filename
+          const filename = post.file.split('/').pop() || '';
+          const slug = filename.replace('.md', '');
+          
+          return (
+            <div class="card" style="display:flex; flex-direction:column; justify-content:space-between; padding:0; overflow:hidden;">
+              <div style="background-color: var(--primary-light); height: 180px; display: flex; align-items: center; justify-content: center; font-size: 50px;">
+                🌲
+              </div>
+              <div style="padding:25px; flex-grow:1; display:flex; flex-direction:column; justify-content:space-between;">
+                <div>
+                  <span style="font-size:12px; color:var(--text-muted); display:block; margin-bottom:8px;">
+                    📅 {new Date(post.frontmatter.publishDate).toLocaleDateString('fr-FR', {year: 'numeric', month: 'long', day: 'numeric'})}
+                  </span>
+                  <h3 style="font-size:18px; margin-bottom:10px; line-height:1.3; color:var(--primary);">
+                    {post.frontmatter.title}
+                  </h3>
+                  <p style="font-size:14px; color:var(--text-muted); line-height:1.5; margin-bottom:20px;">
+                    {post.frontmatter.description}
+                  </p>
+                </div>
+                <div>
+                  <a href={`/guides/${slug}/`} style="font-size:14px; font-weight:bold; text-decoration:none; color:var(--secondary);">
+                    Lire l'article &rarr;
+                  </a>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+</Layout>

@@ -1,0 +1,210 @@
+---
+import Layout from '../layouts/Layout.astro';
+import StepsForm from '../components/StepsForm.astro';
+import SchemaMarkup from '../components/SchemaMarkup.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import communes from '../data/communes.json';
+
+export async function getStaticPaths() {
+  const data = communes;
+  return data.map((commune) => {
+    const lat1 = commune.coordinates?.lat ? commune.coordinates.lat : 43.8902;
+    const lon1 = commune.coordinates?.lon ? commune.coordinates.lon : -0.5002;
+    
+    // Find 5 closest communes
+    const nearby = data
+      .filter((other) => other.slug !== commune.slug)
+      .map((other) => {
+        const lat2 = other.coordinates?.lat ? other.coordinates.lat : 43.8902;
+        const lon2 = other.coordinates?.lon ? other.coordinates.lon : -0.5002;
+        const d = Math.sqrt(Math.pow(lat1 - lat2, 2) + Math.pow(lon1 - lon2, 2));
+        return { nom: other.nom, slug: other.slug, codePostal: other.codePostal, d };
+      })
+      .sort((a, b) => a.d - b.d)
+      .slice(0, 5);
+
+    return {
+      params: { commune: commune.slug },
+      props: { commune, nearbyCommunes: nearby }
+    };
+  });
+}
+
+interface Props {
+  commune: typeof communes[0] & {
+    geographicData: {
+      distanceToCenter: number;
+      surfaceKm2: number;
+      density: number;
+      geoportailLink: string;
+      inseeLink: string;
+      departmentSeniorLink: string;
+    };
+  };
+  nearbyCommunes: { nom: string; slug: string; codePostal: string; }[];
+}
+
+const { commune, nearbyCommunes } = Astro.props;
+
+let imageAlt = `Installateur de monte-escalier RGE qualifié dans les Landes`;
+
+if (commune.intercommunalite.includes("Littoral")) {
+  imageAlt = `Technicien installateur de monte-escalier intervenant à ${commune.nom} sur la Côte d'Argent`;
+} else if (commune.intercommunalite.includes("Forêt")) {
+  imageAlt = `Showroom local de monte-escalier présentant différents fauteuils près de ${commune.nom}`;
+} else if (commune.intercommunalite.includes("Adour")) {
+  imageAlt = `Technicien de monte-escalier ajustant le rail de guidage à ${commune.nom}`;
+}
+---
+<Layout 
+  title={`Installateur Monte-Escalier ${commune.nom} (${commune.codePostal}) : Devis`} 
+  description={`Trouvez un installateur qualifié de monte-escalier à ${commune.nom}. Comparez les professionnels certifiés RGE du 40, les délais et obtenez des devis gratuits.`}
+>
+  <SchemaMarkup type="LocalBusiness" data={{
+    name: `Installateurs Monte-Escalier ${commune.nom}`,
+    description: `Entreprises et techniciens d'installation de monte-escalier actifs à ${commune.nom} et alentours.`,
+    locality: commune.nom,
+    postalCode: commune.codePostal
+  }} />
+
+  <Breadcrumb items={[
+    { label: "Villes du 40", url: "/communes/" },
+    { label: `Monte-escalier ${commune.nom}`, url: `/monte-escalier-${commune.slug}/` },
+    { label: "Installateurs" }
+  ]} />
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container two-column-layout">
+      <div>
+        <span class="badge-pill" style="background:var(--secondary); border-color:#e879f9; color:white; margin-bottom:15px;">
+          🏢 Annuaire local RGE {commune.nom}
+        </span>
+        <h1 style="font-size:36px; line-height:1.2; margin-bottom:20px;">
+          Installateurs de Monte-Escalier à {commune.nom}
+        </h1>
+        <p style="font-size:18px; margin-bottom:25px; opacity:0.9; line-height:1.5;">
+          Comparez les tarifs des techniciens spécialisés en accessibilité PMR actifs dans la région de {commune.nom} (~ {commune.geographicData.distanceToCenter} km de Mont-de-Marsan). Devis gratuits sans engagement.
+        </p>
+
+        <div style="background:rgba(255,255,255,0.05); border:1.5px solid rgba(255,255,255,0.1); border-radius:15px; padding:20px; font-size:14px;">
+          <strong>🌲 Critères de sélection de votre artisan landais :</strong>
+          <ul style="list-style:none; margin-top:10px; display:flex; flex-direction:column; gap:8px;">
+            <li>🌲 Certification Handibat / Accessibilité PMR</li>
+            <li>🌲 Garantie décennale à jour en France</li>
+            <li>🌲 Réactivité SAV dépannage prioritaire sous 24h</li>
+          </ul>
+        </div>
+      </div>
+
+      <div>
+        <StepsForm initialZip={commune.codePostal} initialCommune={commune.nom} />
+      </div>
+    </div>
+  </section>
+
+  <!-- Detailed section -->
+  <section style="padding:60px 0; background:white;">
+    <div class="container two-column-layout" style="align-items:flex-start;">
+      
+      <div>
+        <div style="border:1.5px solid var(--border-color); border-radius:15px; overflow:hidden; margin-bottom:30px;">
+          <div style="background-color: var(--primary-light); height: 250px; display: flex; align-items: center; justify-content: center; font-size: 80px;">
+            🏢
+          </div>
+          <div style="background:var(--bg); padding:10px 15px; font-size:13px; color:var(--text-muted); font-style:italic; border-top:1px solid var(--border-color); text-align:center;">
+            Illustration : {imageAlt}
+          </div>
+        </div>
+
+        <h2 style="font-size:26px; color:var(--primary); margin-bottom:15px;">Trouver le meilleur professionnel à {commune.nom}</h2>
+        <p style="margin-bottom:15px;">
+          Le choix de l'installateur est déterminant pour la sécurité et la pérennité de votre matériel d'autonomie. En comparant les entreprises certifiées dans les Landes (40), vous évitez les intermédiaires commerciaux nationaux et collaborez en direct avec des agences régionales disposant de techniciens salariés de proximité.
+        </p>
+        <p style="margin-bottom:25px;">
+          Ces professionnels locaux connaissent parfaitement la structure architecturale des habitations de {commune.nom} (murs en colombages, escaliers en pin des Landes massif, nez de marches anciens) et emploient les chevilles et scellements adéquats.
+        </p>
+
+        <div style="background:var(--bg); border-left:4px solid var(--secondary); padding:20px; border-radius:0 12px 12px 0; margin-bottom:30px;">
+          <h4 style="color:var(--secondary); margin-bottom:8px;">⏱️ Délais d'intervention constatés :</h4>
+          <p style="font-size:14px; color:var(--text-muted); line-height:1.5;">
+            Sur le secteur de {commune.nom}, le délai moyen d'intervention pour un relevé technique 3D laser gratuit est de <strong>{commune.marketData.delaiMoyenJours} jours</strong>. La fabrication du rail courbe prend ensuite 3 à 5 semaines en usine avant l'installation finale qui s'effectue en une journée.
+          </p>
+        </div>
+
+        <p style="margin-bottom:20px;">
+          Pour démarrer la simulation de vos subventions (MaPrimeAdapt', APA 40) et comparer les propositions techniques des meilleurs artisans du secteur, utilisez notre configurateur en ligne sécurisé.
+        </p>
+      </div>
+
+      <!-- Right Sidebar -->
+      <aside style="display:flex; flex-direction:column; gap:30px; position: sticky; top: 100px;">
+        
+        <!-- Identity Table -->
+        <div style="background: white; border: 2px solid var(--border-color); border-radius: var(--radius-md); padding: 25px; box-shadow:var(--shadow-sm);">
+          <h3 style="font-size:18px; color:var(--primary); margin-bottom:15px; text-align:center;">📋 Fiche administrative : {commune.nom}</h3>
+          
+          <table style="width:100%; font-size:13px; border-collapse:collapse; margin-bottom:15px;">
+            <tbody>
+              <tr style="border-bottom:1px solid var(--border-color);">
+                <td style="padding:8px 0; color:var(--text-muted);">Code Insee</td>
+                <td style="padding:8px 0; text-align:right; font-weight:bold;">{commune.codeInsee}</td>
+              </tr>
+              <tr style="border-bottom:1px solid var(--border-color);">
+                <td style="padding:8px 0; color:var(--text-muted);">Superficie</td>
+                <td style="padding:8px 0; text-align:right; font-weight:bold;">{commune.geographicData.surfaceKm2} km²</td>
+              </tr>
+              <tr style="border-bottom:1px solid var(--border-color);">
+                <td style="padding:8px 0; color:var(--text-muted);">Densité</td>
+                <td style="padding:8px 0; text-align:right; font-weight:bold;">{commune.geographicData.density} hab/km²</td>
+              </tr>
+              <tr style="border-bottom:1px solid var(--border-color);">
+                <td style="padding:8px 0; color:var(--text-muted);">Distance de Mont-de-Marsan</td>
+                <td style="padding:8px 0; text-align:right; font-weight:bold;">~ {commune.geographicData.distanceToCenter} km</td>
+              </tr>
+              <tr>
+                <td style="padding:8px 0; color:var(--text-muted);">Altitude moyenne</td>
+                <td style="padding:8px 0; text-align:right; font-weight:bold;">{commune.altitude} m</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div style="display:flex; flex-direction:column; gap:8px; border-top:1px solid var(--border-color); padding-top:15px; font-size:12px;">
+            <strong style="color:var(--text); margin-bottom:4px; display:block;">Liens officiels complémentaires :</strong>
+            <a href={commune.geographicData.geoportailLink} target="_blank" rel="noopener noreferrer" style="color:var(--primary); text-decoration:none; display:flex; align-items:center; gap:5px;">
+              🗺️ Carte Géoportail de {commune.nom} &rarr;
+            </a>
+            <a href={commune.geographicData.inseeLink} target="_blank" rel="noopener noreferrer" style="color:var(--primary); text-decoration:none; display:flex; align-items:center; gap:5px;">
+              📊 Statistiques INSEE {commune.nom} &rarr;
+            </a>
+            <a href={commune.geographicData.departmentSeniorLink} target="_blank" rel="noopener noreferrer" style="color:var(--primary); text-decoration:none; display:flex; align-items:center; gap:5px;">
+              🏛️ Conseil Départemental des Landes &rarr;
+            </a>
+          </div>
+        </div>
+
+        <!-- Proximity links side -->
+        <div style="background: var(--primary-light); border: 2px solid var(--border-color); border-radius: var(--radius-md); padding: 25px;">
+          <h3 style="font-size:18px; color:var(--primary); margin-bottom:15px; text-align:center;">🏢 Installateurs voisins (40)</h3>
+          <ul style="list-style:none; display:flex; flex-direction:column; gap:10px;">
+            {nearbyCommunes.map(nc => (
+              <li>
+                <a href={`/installateur-monte-escalier-${nc.slug}/`} style="text-decoration:none; display:flex; justify-content:space-between; background:white; border:1px solid var(--border-color); padding:10px; border-radius:8px; font-size:13px; color:var(--text); transition:var(--transition);">
+                  <strong>{nc.nom}</strong>
+                  <span style="color:var(--primary); font-size:11px;">{nc.codePostal} &rarr;</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+
+          <div style="margin-top:20px; text-align:center; border-top:1px solid var(--border-color); padding-top:15px;">
+            <a href={`/monte-escalier-${commune.slug}/`} style="font-size:13px; font-weight:bold; color:var(--secondary); text-decoration:none;">
+              🏡 Voir la fiche d'accessibilité de {commune.nom} &rarr;
+            </a>
+          </div>
+        </div>
+
+      </aside>
+    </div>
+  </section>
+</Layout>

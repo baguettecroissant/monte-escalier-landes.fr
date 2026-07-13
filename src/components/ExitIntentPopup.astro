@@ -1,0 +1,204 @@
+---
+---
+<div id="exit-intent-popup" class="exit-popup-overlay" aria-hidden="true" role="dialog">
+  <div class="exit-popup-content">
+    <button id="close-exit-popup" class="exit-popup-close" aria-label="Fermer la fenêtre">&times;</button>
+    <div class="exit-popup-header">
+      <span class="exit-popup-badge">💡 Opportunité Landes 40</span>
+      <h2>Seniors des Landes : Ne passez pas à côté de vos aides 2026 !</h2>
+    </div>
+    <div class="exit-popup-body">
+      <p>Le <strong>Conseil Départemental des Landes</strong> et l'Anah financent jusqu'à <strong>70% du montant</strong> de l'installation de votre monte-escalier via <strong>MaPrimeAdapt'</strong> et l'<strong>APA 40</strong>.</p>
+      
+      <div class="exit-popup-stats">
+        <div class="stat-box">
+          <span class="stat-number">25%</span>
+          <span class="stat-label">Crédit d'impôt direct</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-number">GIR 1-4</span>
+          <span class="stat-label">Éligibilité APA 40</span>
+        </div>
+      </div>
+      
+      <p class="exit-popup-note">Simple, gratuit et sans engagement : faites estimer vos subventions en 2 minutes.</p>
+    </div>
+    <div class="exit-popup-footer">
+      <a href="/devis/" class="btn-primary exit-popup-btn">Estimer mes aides &rarr;</a>
+    </div>
+  </div>
+</div>
+
+<style>
+  .exit-popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(22, 101, 52, 0.4);
+    backdrop-filter: blur(8px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    padding: 20px;
+  }
+
+  .exit-popup-overlay.show {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .exit-popup-content {
+    background: white;
+    border-radius: 20px;
+    padding: 35px;
+    max-width: 500px;
+    width: 100%;
+    position: relative;
+    box-shadow: 0 20px 25px -5px rgba(22, 101, 52, 0.15);
+    border: 2px solid var(--border-color);
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+    text-align: center;
+  }
+
+  .exit-popup-overlay.show .exit-popup-content {
+    transform: scale(1);
+  }
+
+  .exit-popup-close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 28px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-muted);
+  }
+
+  .exit-popup-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 16px;
+    background-color: var(--primary-light);
+    border: 1px solid var(--border-color);
+    color: var(--primary);
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .exit-popup-header h2 {
+    margin-top: 15px;
+    font-size: 22px;
+    color: var(--primary);
+    line-height: 1.3;
+  }
+
+  .exit-popup-body {
+    margin: 20px 0;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--text);
+  }
+
+  .exit-popup-stats {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 20px 0;
+  }
+
+  .stat-box {
+    flex: 1;
+    background-color: var(--primary-light);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 12px;
+  }
+
+  .stat-number {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--primary);
+  }
+
+  .stat-label {
+    display: block;
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+
+  .exit-popup-note {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+    margin-top: 15px;
+  }
+
+  .exit-popup-btn {
+    width: 100%;
+    margin-top: 10px;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const popup = document.getElementById('exit-intent-popup');
+    const closeBtn = document.getElementById('close-exit-popup');
+    const storageKey = 'monte_escalier_exit_popup_shown_40';
+    
+    if (!popup) return;
+    
+    // Check if already shown
+    const isShown = localStorage.getItem(storageKey);
+    if (isShown) return;
+    
+    const showPopup = () => {
+      popup.classList.add('show');
+      popup.setAttribute('aria-hidden', 'false');
+      localStorage.setItem(storageKey, 'true');
+    };
+    
+    // Desktop: exit intent on mouseleave top of window
+    document.addEventListener('mouseleave', (e) => {
+      if (e.clientY < 50) {
+        showPopup();
+      }
+    });
+    
+    // Mobile: trigger after 20s
+    setTimeout(() => {
+      const isMobile = window.innerWidth <= 768;
+      if (isMobile) {
+        showPopup();
+      }
+    }, 20000);
+
+    // Close actions
+    const closePopup = () => {
+      popup.classList.remove('show');
+      popup.setAttribute('aria-hidden', 'true');
+    };
+
+    if (closeBtn) {
+      closeBtn.addEventListener('click', closePopup);
+    }
+
+    popup.addEventListener('click', (e) => {
+      if (e.target === popup) {
+        closePopup();
+      }
+    });
+  });
+</script>

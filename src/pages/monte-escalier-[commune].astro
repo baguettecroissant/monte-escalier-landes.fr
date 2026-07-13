@@ -1,0 +1,257 @@
+---
+import Layout from '../layouts/Layout.astro';
+import StepsForm from '../components/StepsForm.astro';
+import SchemaMarkup from '../components/SchemaMarkup.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import communes from '../data/communes.json';
+
+export async function getStaticPaths() {
+  const data = communes;
+  return data.map((commune) => {
+    const lat1 = commune.coordinates?.lat ? commune.coordinates.lat : 43.8902;
+    const lon1 = commune.coordinates?.lon ? commune.coordinates.lon : -0.5002;
+    
+    // Find 5 closest communes
+    const nearby = data
+      .filter((other) => other.slug !== commune.slug)
+      .map((other) => {
+        const lat2 = other.coordinates?.lat ? other.coordinates.lat : 43.8902;
+        const lon2 = other.coordinates?.lon ? other.coordinates.lon : -0.5002;
+        const d = Math.sqrt(Math.pow(lat1 - lat2, 2) + Math.pow(lon1 - lon2, 2));
+        return { nom: other.nom, slug: other.slug, codePostal: other.codePostal, d };
+      })
+      .sort((a, b) => a.d - b.d)
+      .slice(0, 5);
+
+    return {
+      params: { commune: commune.slug },
+      props: { commune, nearbyCommunes: nearby }
+    };
+  });
+}
+
+interface Props {
+  commune: typeof communes[0] & {
+    introText: string;
+    accessibilityChallenge: string;
+    localHelp: string;
+    anecdotePatrimoine: string;
+    stairliftCharacteristics: {
+      typeEscalier: string;
+      rail: string;
+      option: string;
+      chargeUtile: string;
+    };
+    faq: { q: string; a: string; }[];
+  };
+  nearbyCommunes: { nom: string; slug: string; codePostal: string; }[];
+}
+
+const { commune, nearbyCommunes } = Astro.props;
+
+// Contextual images based on the region
+let localImage = "/images/hero-monte-escalier-landes.png";
+let imageAlt = `Installation de monte-escalier à ${commune.nom} dans une maison traditionnelle landaise`;
+
+if (commune.intercommunalite.includes("Littoral")) {
+  imageAlt = `Monte-escalier premium adapté à une villa littorale à ${commune.nom} sur la Côte d'Argent`;
+} else if (commune.intercommunalite.includes("Forêt")) {
+  imageAlt = `Monte-escalier posé sur des marches en pin maritime dans un airial traditionnel à ${commune.nom}`;
+} else if (commune.intercommunalite.includes("Adour")) {
+  imageAlt = `Monte-escalier posé dans une maison de ville bourgeoise ou pavillon près de ${commune.nom}`;
+}
+---
+<Layout 
+  title={`Monte-Escalier ${commune.nom} (${commune.codePostal}) : Prix & Devis Pose`} 
+  description={`Faites installer votre monte-escalier à ${commune.nom}. Grille de prix 2026, estimations d'aides (Anah MaPrimeAdapt', APA 40) et devis d'artisans sous ${commune.marketData.delaiMoyenJours} jours.`}
+>
+  <!-- Schema LocalBusiness & FAQ -->
+  <SchemaMarkup type="LocalBusiness" data={{
+    name: `Monte-Escalier ${commune.nom}`,
+    description: `Installation de monte-escaliers droits et courbes pour seniors à ${commune.nom} (${commune.codePostal}).`,
+    locality: commune.nom,
+    postalCode: commune.codePostal
+  }} />
+  <SchemaMarkup type="FAQPage" data={commune.faq} />
+
+  <Breadcrumb items={[
+    { label: "Villes du 40", url: "/communes/" },
+    { label: commune.nom }
+  ]} />
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container two-column-layout">
+      <div>
+        <span class="badge-pill" style="background:var(--secondary); border-color:#e879f9; color:white; margin-bottom:15px;">
+          📍 Proximité {commune.nom} ({commune.codePostal})
+        </span>
+        <h1 style="font-size:36px; line-height:1.2; margin-bottom:20px;">
+          Installation de Monte-Escalier à {commune.nom}
+        </h1>
+        <p style="font-size:18px; margin-bottom:25px; opacity:0.9; line-height:1.5;">
+          Sécurisez vos escaliers et préservez votre autonomie chez vous dans les Landes. Obtenez une simulation personnalisée de vos aides régionales et comparez 3 offres d'artisans locaux.
+        </p>
+
+        <div style="background:rgba(255,255,255,0.05); border:1.5px solid rgba(255,255,255,0.1); border-radius:15px; padding:20px; font-size:14px; line-height:1.5;">
+          <strong>📊 Indicateurs clés {commune.nom} :</strong>
+          <ul style="list-style:none; margin-top:10px; display:flex; flex-direction:column; gap:8px;">
+            <li>🌲 Retraités & Seniors : ~<strong>{commune.marketData.seniorPercentage}%</strong> de la population</li>
+            <li>🌲 Artisans spécialisés actifs sur le secteur : <strong>{commune.marketData.installateursAgrees} entreprises</strong></li>
+            <li>🌲 Délai d'étude à domicile : <strong>{commune.marketData.delaiMoyenJours} jours</strong> en moyenne</li>
+          </ul>
+        </div>
+      </div>
+
+      <div>
+        <StepsForm initialZip={commune.codePostal} initialCommune={commune.nom} />
+      </div>
+    </div>
+  </section>
+
+  <!-- Content section with local SEO -->
+  <section style="padding:60px 0; background:white;">
+    <div class="container two-column-layout" style="align-items:flex-start;">
+      
+      <!-- Left Column: Detailed custom copy -->
+      <div style="font-size:16px; line-height:1.7; color:var(--text);">
+        
+        <h2 style="font-size:24px; color:var(--primary); margin-bottom:15px; font-weight:800;">Monte-escalier senior à {commune.nom} : Contexte Départemental</h2>
+        <p style="margin-bottom:20px;">
+          {commune.introText}
+        </p>
+
+        <!-- Placeholder for Localized visual context -->
+        <div style="margin:30px 0; border:1.5px solid var(--border-color); border-radius:15px; overflow:hidden;">
+          <div style="background-color: var(--primary-light); height: 250px; display: flex; align-items: center; justify-content: center; font-size: 80px;">
+            🌲
+          </div>
+          <div style="background:var(--bg); padding:10px 15px; font-size:13px; color:var(--text-muted); font-style:italic; border-top:1px solid var(--border-color); text-align:center;">
+            Illustration : {imageAlt}
+          </div>
+        </div>
+
+        <h2 style="font-size:24px; color:var(--primary); margin-bottom:15px; font-weight:800;">Le défi technique de l'accessibilité à {commune.nom}</h2>
+        <p style="margin-bottom:20px;">
+          {commune.accessibilityChallenge}
+        </p>
+
+        <h2 style="font-size:24px; color:var(--primary); margin-bottom:15px; font-weight:800;">Aides départementales et nationales mobilisables</h2>
+        <p style="margin-bottom:20px;">
+          {commune.localHelp}
+        </p>
+
+        <!-- Technical Specification Card -->
+        <div style="background:var(--bg); border:1.5px solid var(--border-color); border-radius:15px; padding:30px; margin:40px 0;">
+          <h3 style="font-size:20px; color:var(--primary); margin-bottom:15px; text-align:center;">📋 Fiche technique monte-escalier posé à {commune.nom}</h3>
+          <table style="width:100%; font-size:14px; border-collapse:collapse;">
+            <tbody>
+              <tr style="border-bottom:1px solid var(--border-color);">
+                <td style="padding:10px 0; font-weight:bold; color:var(--text);">Type d'appareil conseillé</td>
+                <td style="padding:10px 0; text-align:right; color:var(--text-muted);">{commune.stairliftCharacteristics.typeEscalier}</td>
+              </tr>
+              <tr style="border-bottom:1px solid var(--border-color);">
+                <td style="padding:10px 0; font-weight:bold; color:var(--text);">Guidage / Fixation</td>
+                <td style="padding:10px 0; text-align:right; color:var(--text-muted);">{commune.stairliftCharacteristics.rail}</td>
+              </tr>
+              <tr style="border-bottom:1px solid var(--border-color);">
+                <td style="padding:10px 0; font-weight:bold; color:var(--text);">Option incluse d'office</td>
+                <td style="padding:10px 0; text-align:right; color:var(--text-muted);">{commune.stairliftCharacteristics.option}</td>
+              </tr>
+              <tr>
+                <td style="padding:10px 0; font-weight:bold; color:var(--text);">Certifications obligatoires</td>
+                <td style="padding:10px 0; text-align:right; color:var(--text-muted);">{commune.stairliftCharacteristics.chargeUtile}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2 style="font-size:24px; color:var(--primary); margin-bottom:15px; font-weight:800;">Valorisation du patrimoine landais</h2>
+        <p style="margin-bottom:30px;">
+          {commune.anecdotePatrimoine}
+        </p>
+
+        <!-- FAQs Dynamic -->
+        <h2 style="font-size:24px; color:var(--primary); margin-bottom:20px; font-weight:800;">Foire aux Questions (FAQ) — {commune.nom}</h2>
+        <div style="display:flex; flex-direction:column; gap:20px;">
+          {commune.faq.map(item => (
+            <div style="background:var(--primary-light); border:1px solid var(--border-color); border-radius:12px; padding:20px;">
+              <h4 style="font-size:16px; color:var(--primary); margin-bottom:8px; font-weight:800;">❓ {item.q}</h4>
+              <p style="font-size:15px; color:var(--text); line-height:1.5;">{item.a}</p>
+            </div>
+          ))}
+        </div>
+
+      </div>
+
+      <!-- Right Column: Sidebar with geographical info and neighboring communes links -->
+      <aside style="display:flex; flex-direction:column; gap:30px; position: sticky; top: 100px;">
+        
+        <!-- Local Identity Table -->
+        <div style="background: white; border: 2px solid var(--border-color); border-radius: var(--radius-md); padding: 25px; box-shadow:var(--shadow-sm);">
+          <h3 style="font-size:18px; color:var(--primary); margin-bottom:15px; text-align:center;">📋 Fiche administrative : {commune.nom}</h3>
+          
+          <table style="width:100%; font-size:13px; border-collapse:collapse; margin-bottom:15px;">
+            <tbody>
+              <tr style="border-bottom:1px solid var(--border-color);">
+                <td style="padding:8px 0; color:var(--text-muted);">Code Insee</td>
+                <td style="padding:8px 0; text-align:right; font-weight:bold;">{commune.codeInsee}</td>
+              </tr>
+              <tr style="border-bottom:1px solid var(--border-color);">
+                <td style="padding:8px 0; color:var(--text-muted);">Superficie</td>
+                <td style="padding:8px 0; text-align:right; font-weight:bold;">{commune.geographicData.surfaceKm2} km²</td>
+              </tr>
+              <tr style="border-bottom:1px solid var(--border-color);">
+                <td style="padding:8px 0; color:var(--text-muted);">Densité de population</td>
+                <td style="padding:8px 0; text-align:right; font-weight:bold;">{commune.geographicData.density} hab/km²</td>
+              </tr>
+              <tr style="border-bottom:1px solid var(--border-color);">
+                <td style="padding:8px 0; color:var(--text-muted);">Distance de Mont-de-Marsan</td>
+                <td style="padding:8px 0; text-align:right; font-weight:bold;">~ {commune.geographicData.distanceToCenter} km</td>
+              </tr>
+              <tr>
+                <td style="padding:8px 0; color:var(--text-muted);">Altitude moyenne</td>
+                <td style="padding:8px 0; text-align:right; font-weight:bold;">{commune.altitude} m</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div style="display:flex; flex-direction:column; gap:8px; border-top:1px solid var(--border-color); padding-top:15px; font-size:12px;">
+            <strong style="color:var(--text); margin-bottom:4px; display:block;">Liens officiels complémentaires :</strong>
+            <a href={commune.geographicData.geoportailLink} target="_blank" rel="noopener noreferrer" style="color:var(--primary); text-decoration:none; display:flex; align-items:center; gap:5px;">
+              🗺️ Carte Géoportail de {commune.nom} &rarr;
+            </a>
+            <a href={commune.geographicData.inseeLink} target="_blank" rel="noopener noreferrer" style="color:var(--primary); text-decoration:none; display:flex; align-items:center; gap:5px;">
+              📊 Statistiques INSEE {commune.nom} &rarr;
+            </a>
+            <a href={commune.geographicData.departmentSeniorLink} target="_blank" rel="noopener noreferrer" style="color:var(--primary); text-decoration:none; display:flex; align-items:center; gap:5px;">
+              🏛️ Conseil Départemental des Landes &rarr;
+            </a>
+          </div>
+        </div>
+
+        <!-- Proximity loop Links -->
+        <div style="background: var(--primary-light); border: 2px solid var(--border-color); border-radius: var(--radius-md); padding: 25px;">
+          <h3 style="font-size:18px; color:var(--primary); margin-bottom:15px; text-align:center;">📍 Villes voisines (40)</h3>
+          <ul style="list-style:none; display:flex; flex-direction:column; gap:10px;">
+            {nearbyCommunes.map(nc => (
+              <li>
+                <a href={`/monte-escalier-${nc.slug}/`} style="text-decoration:none; display:flex; justify-content:space-between; background:white; border:1px solid var(--border-color); padding:10px; border-radius:8px; font-size:13px; color:var(--text); transition:var(--transition);">
+                  <strong>{nc.nom}</strong>
+                  <span style="color:var(--primary); font-size:11px;">{nc.codePostal} &rarr;</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+
+          <div style="margin-top:20px; text-align:center; border-top:1px solid var(--border-color); padding-top:15px;">
+            <a href={`/installateur-monte-escalier-${commune.slug}/`} style="font-size:13px; font-weight:bold; color:var(--secondary); text-decoration:none;">
+              🏢 Trouver un installateur à {commune.nom} &rarr;
+            </a>
+          </div>
+        </div>
+
+      </aside>
+    </div>
+  </section>
+</Layout>

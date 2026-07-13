@@ -1,0 +1,30 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+---
+<Layout title="Demande Validée — Monte-Escalier Landes (40)" description="Votre demande d'estimation de subvention RGE a bien été transmise aux experts agréés. Un conseiller vous contactera sous 24 à 48 heures.">
+  <Breadcrumb items={[{ label: "Confirmation" }]} />
+
+  <section style="padding: 80px 0; background: white; text-align: center;">
+    <div class="container" style="max-width: 650px;">
+      <span style="font-size: 60px; display: block; margin-bottom: 20px;">🌲</span>
+      <h1 style="font-size: 32px; color: var(--primary); margin-bottom: 15px;">Demande Enregistrée avec Succès !</h1>
+      <p style="font-size: 18px; color: var(--text); margin-bottom: 25px; line-height: 1.6;">
+        Merci pour votre confiance. Votre dossier d'éligibilité pour les aides <strong>MaPrimeAdapt'</strong> et <strong>APA 40</strong> dans les Landes est en cours d'analyse par notre conseiller de secteur.
+      </p>
+
+      <div style="background: var(--primary-light); border: 1.5px solid var(--border-color); border-radius: 12px; padding: 25px; margin-bottom: 30px; text-align: left;">
+        <h4 style="color: var(--primary); margin-bottom: 10px;">📋 Prochaines étapes de votre projet :</h4>
+        <ul style="list-style: none; display: flex; flex-direction: column; gap: 10px; font-size: 15px;">
+          <li>📞 <strong>1. Qualification téléphonique</strong> : Un conseiller qualifié va vous contacter pour confirmer la configuration de vos marches.</li>
+          <li>📊 <strong>2. Calcul des subventions</strong> : Analyse de votre éligibilité aux aides de l'Anah, du CD 40 et au crédit d'impôt.</li>
+          <li>🏠 <strong>3. Étude technique gratuite</strong> : Programmation d'une visite gratuite par un technicien RGE agréé proche de chez vous.</li>
+        </ul>
+      </div>
+
+      <div style="text-align: center;">
+        <a href="/" class="btn-primary">&larr; Retourner à l'accueil</a>
+      </div>
+    </div>
+  </section>
+</Layout>

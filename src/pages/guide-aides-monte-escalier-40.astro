@@ -1,0 +1,71 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import StepsForm from '../components/StepsForm.astro';
+
+const activeTab = 'aides';
+---
+<Layout title="Aides Financières Monte-Escalier Landes (40) — MaPrimeAdapt' & APA" activeTab={activeTab} description="Tout savoir sur les subventions 2026 pour faire installer un monte-escalier dans les Landes (40) : APA du Conseil Départemental, crédit d'impôt et MaPrimeAdapt'.">
+  <Breadcrumb items={[{ label: "Guide Aides Financières" }]} />
+
+  <!-- Hero sub header -->
+  <section style="background:linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); padding: 50px 0; color: white; text-align: center;">
+    <div class="container">
+      <span class="badge-pill" style="background:rgba(255,255,255,0.1); border-color:rgba(255,255,255,0.2); color:white; margin-bottom:15px;">
+        Subventions 2026
+      </span>
+      <h1 style="font-size:32px; color: white;">Aides et Subventions pour Monte-Escalier dans les Landes (40)</h1>
+      <p style="font-size:18px; margin-top:10px; opacity:0.9; color: white;">
+        Comment financer vos travaux de maintien à domicile avec l'Anah et le Département ?
+      </p>
+    </div>
+  </section>
+
+  <!-- Detailed content -->
+  <section style="padding:60px 0; background:white;">
+    <div class="container two-column-layout" style="align-items:flex-start;">
+      
+      <div style="font-size:16px; line-height:1.7; color:var(--text);">
+        <h2 style="font-size:24px; color:var(--primary); margin-bottom:15px; font-weight: 800;">1. MaPrimeAdapt' : Financement de l'Anah Aquitaine / Landes</h2>
+        <p style="margin-bottom:15px;">
+          Le dispositif <strong>MaPrimeAdapt'</strong> piloté par l'Agence Nationale de l'Habitat (Anah) centralise le financement des travaux de maintien à domicile. Il s'adresse aux propriétaires occupants et locataires du 40 sous conditions de ressources :
+        </p>
+        <ul style="margin-bottom:20px; padding-left:20px;">
+          <li style="margin-bottom:8px;">🌲 <strong>Revenus très modestes</strong> : Prise en charge de <strong>70% HT</strong> des travaux (jusqu'à 15 400 € d'aide).</li>
+          <li style="margin-bottom:8px;">🌲 <strong>Revenus modestes</strong> : Prise en charge de <strong>50% HT</strong> des travaux (jusqu'à 11 000 € d'aide).</li>
+        </ul>
+        <p style="margin-bottom:25px;">
+          Cette subvention s'applique directement aux monte-escaliers électriques pour les seniors de plus de 70 ans ou de 60-69 ans sous condition de perte d'autonomie (classement GIR).
+        </p>
+
+        <h2 style="font-size:24px; color:var(--primary); margin-bottom:15px; font-weight: 800;">2. L'APA 40 : L'aide autonomie du Département des Landes</h2>
+        <p style="margin-bottom:15px;">
+          Le <strong>Conseil Départemental des Landes (CD 40)</strong> propose l'Allocation Personnalisée d'Autonomie (APA) à domicile pour financer les aménagements prescrits par son équipe médico-sociale :
+        </p>
+        <ul style="margin-bottom:20px; padding-left:20px;">
+          <li style="margin-bottom:8px;">🌲 Réservée aux personnes âgées de 60 ans et plus.</li>
+          <li style="margin-bottom:8px;">🌲 Éligibilité basée sur la perte d'autonomie (niveaux GIR 1 à 4).</li>
+          <li style="margin-bottom:8px;">🌲 Le plan d'aide peut financer la pose, la location ou l'entretien de l'appareil.</li>
+        </ul>
+        <p style="margin-bottom:25px;">
+          Les dossiers peuvent être retirés dans les mairies de Mont-de-Marsan, Dax, Biscarrosse, Capbreton, Hossegor, Mimizan, ou directement auprès des Pôles Solidarité ou Centres Communaux d'Action Sociale (CCAS) locaux du 40.
+        </p>
+
+        <h2 style="font-size:24px; color:var(--primary); margin-bottom:15px; font-weight: 800;">3. Crédit d'Impôt Accessibilité & TVA 5.5%</h2>
+        <p style="margin-bottom:15px;">
+          L'installation d'un fauteuil élévateur par un professionnel certifié RGE vous ouvre droit à :
+        </p>
+        <ul style="margin-bottom:20px; padding-left:20px;">
+          <li style="margin-bottom:8px;">🌲 Un <strong>crédit d'impôt direct de 25%</strong> sur le reste à charge (plafonné à 5000 € pour une personne seule, 10000 € pour un couple).</li>
+          <li style="margin-bottom:8px;">🌲 Une <strong>TVA réduite à 5.5%</strong> directement appliquée sur la facture de matériel et de main-d'œuvre.</li>
+        </ul>
+      </div>
+
+      <aside style="position:sticky; top:100px;">
+        <h3 style="font-size:18px; color:var(--primary); margin-bottom:15px; text-align:center;">Simuler mon reste à charge</h3>
+        <StepsForm />
+      </aside>
+
+    </div>
+  </section>
+</Layout>

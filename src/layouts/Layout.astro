@@ -1,0 +1,119 @@
+---
+import '../styles/global.css';
+import config from '../data/config.json';
+import communes from '../data/communes.json';
+import ExitIntentPopup from '../components/ExitIntentPopup.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+  canonicalUrl?: string;
+  activeTab?: string;
+}
+
+const { 
+  title = "Monte-Escalier Landes (40) : Devis Gratuit & Autonomie à Domicile", 
+  description = "Comparez gratuitement les installateurs de monte-escaliers dans les Landes (40). Estimation d'aides (ANAH, APA 40), tarifs droits & courbes, devis sous 48h.", 
+  canonicalUrl,
+  activeTab
+} = Astro.props;
+
+const currentYear = new Date().getFullYear();
+const normalizedPath = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${Astro.url.pathname}/`;
+const canonical = canonicalUrl || `https://${config.domain}${normalizedPath}`;
+
+// Top 8 populated communes to display in the footer
+const topCommunes = communes && communes.length ? communes.slice(0, 8) : [];
+---
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={`https://${config.domain}/images/hero-monte-escalier-landes.png`} />
+    
+    <meta name="robots" content="index, follow" />
+  </head>
+  <body>
+    <header>
+      <div class="container header-inner">
+        <a href="/" class="logo">
+          <span>🌲</span> Monte-Escalier 40
+        </a>
+        <nav class="header-nav" aria-label="Menu principal">
+          <a href="/" class={activeTab === 'home' ? 'active' : ''}>Accueil</a>
+          <a href="/guide-aides-monte-escalier-40/" class={activeTab === 'aides' ? 'active' : ''}>💶 Aides 40</a>
+          <a href="/monte-escalier-maison-landaise/" class={activeTab === 'landaise' ? 'active' : ''}>🏡 Maison Landaise</a>
+          <a href="/tarifs/" class={activeTab === 'tarifs' ? 'active' : ''}>Tarifs 2026</a>
+          <a href="/communes/" class={activeTab === 'communes' ? 'active' : ''}>Villes 40</a>
+        </nav>
+        <div>
+          <a href="/devis/" class="btn-primary header-cta">Estimer mes aides &rarr;</a>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer>
+      <div class="container footer-grid">
+        <div class="footer-brand">
+          <h3 style="margin-bottom:15px;">🌲 Monte-Escalier Landes</h3>
+          <p style="font-size:15px; color:#94a3b8; line-height:1.6; margin-bottom:20px;">
+            Le portail indépendant de comparaison pour sécuriser le maintien à domicile des seniors dans le département des Landes (40). Estimation gratuite de subventions (MaPrimeAdapt', APA 40, Crédit d'impôt).
+          </p>
+          <p style="font-size:14px; color:#64748b;">
+            Une initiative solidaire pour l'accessibilité senior en Nouvelle-Aquitaine (Littoral Argenté, Forêt Landaise, Chalosse & Tursan).
+          </p>
+        </div>
+        
+        <div class="footer-links">
+          <h3>Top Villes des Landes</h3>
+          <ul>
+            {topCommunes.map(c => (
+              <li>
+                <a href={`/monte-escalier-${c.slug}/`}>Monte-escalier {c.nom} ({c.codePostal})</a>
+              </li>
+            ))}
+          </ul>
+        </div>
+        
+        <div class="footer-links">
+          <h3>Guides & Infos</h3>
+          <ul>
+            <li><a href="/guide-aides-monte-escalier-40/">Grille des aides financières 2026</a></li>
+            <li><a href="/monte-escalier-maison-landaise/">Solutions pour escalier en pin maritime</a></li>
+            <li><a href="/tarifs/">Grille de prix par modèle</a></li>
+            <li><a href="/communes/">Annuaire des communes du 40</a></li>
+            <li><a href="/politique-confidentialite/">Politique de confidentialité</a></li>
+            <li><a href="/mentions-legales/">Mentions légales</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="container footer-bottom">
+        <p>&copy; {currentYear} {config.domain}. Tous droits réservés.</p>
+        <p style="font-size:13px; color:#64748b;">
+          Comparateur gratuit sans engagement. Les estimations d'aides sont fournies à titre indicatif sous réserve d'audit technique RGE à domicile.
+        </p>
+      </div>
+    </footer>
+
+    <ExitIntentPopup />
+  </body>
+</html>

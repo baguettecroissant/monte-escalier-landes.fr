@@ -1,0 +1,33 @@
+---
+interface Props {
+  items: {
+    label: string;
+    url?: string;
+  }[];
+}
+
+const { items } = Astro.props;
+---
+<div class="breadcrumb-container">
+  <div class="container">
+    <nav aria-label="Fil d'Ariane">
+      <ul class="breadcrumb-list">
+        <li class="breadcrumb-item">
+          <a href="/">Accueil</a>
+        </li>
+        {items.map((item, idx) => {
+          const isLast = idx === items.length - 1;
+          return (
+            <li class="breadcrumb-item" aria-current={isLast ? 'page' : undefined}>
+              {!isLast && item.url ? (
+                <a href={item.url}>{item.label}</a>
+              ) : (
+                <span>{item.label}</span>
+              )}
+            </li>
+          );
+        })}
+      </ul>
+    </nav>
+  </div>
+</div>

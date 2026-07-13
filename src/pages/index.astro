@@ -1,0 +1,253 @@
+---
+import Layout from '../layouts/Layout.astro';
+import StepsForm from '../components/StepsForm.astro';
+import communes from '../data/communes.json';
+
+const activeTab = 'home';
+const topCommunes = communes.slice(0, 8);
+
+// Fetch recent guides
+const posts = Object.values(import.meta.glob('../content/guides/*.md', { eager: true })) as any[];
+const recentPosts = posts
+  .sort((a, b) => new Date(b.frontmatter.publishDate).getTime() - new Date(a.frontmatter.publishDate).getTime())
+  .slice(0, 3);
+---
+<Layout title="Monte-Escalier Landes (40) — Autonomie à Domicile & Devis Gratuits 2026" activeTab={activeTab}>
+  
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container two-column-layout">
+      <div>
+        <span class="badge-pill" style="margin-bottom:15px; background:var(--secondary); border-color:#e879f9; color:white;">
+          Visite gratuite — Landes entières couvertes
+        </span>
+        <h1 style="font-size:38px; margin-bottom:20px; line-height:1.2; text-shadow:0 2px 4px rgba(0,0,0,0.3);">
+          Maintien à Domicile dans les Landes (40)
+        </h1>
+        <p style="font-size:18px; margin-bottom:30px; opacity:0.9; line-height:1.5;">
+          Comparez gratuitement les installateurs locaux de monte-escaliers certifiés RGE. Obtenez le meilleur devis adapté aux escaliers de votre airial landais ou villa littorale.
+        </p>
+        
+        <ul style="list-style:none; margin-bottom:30px; font-weight:700; display:flex; flex-direction:column; gap:12px;">
+          <li style="display:flex; align-items:center; gap:8px;">🌲 Éligibilité MaPrimeAdapt' & APA 40 (CD 40)</li>
+          <li style="display:flex; align-items:center; gap:8px;">🌲 Matériel sécurisé certifié NF EN 81-40 & homologué CE</li>
+          <li style="display:flex; align-items:center; gap:8px;">🌲 3 devis comparatifs gratuits sous 48 heures</li>
+        </ul>
+
+        <div style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:15px; padding:15px; display:inline-flex; align-items:center; gap:15px;">
+          <span style="font-size:30px;" class="pine-sway-animate">🌲</span>
+          <p style="font-size:14px; opacity:0.8; line-height:1.4;">
+            <strong>Ancrage Local</strong> : Des installations pensées pour respecter l'âme et le pin maritime de nos vieilles demeures landaises et villas océanes.
+          </p>
+        </div>
+      </div>
+
+      <div>
+        <StepsForm />
+      </div>
+    </div>
+  </section>
+
+  <!-- Value Propositions -->
+  <section style="padding:80px 0; background:white;">
+    <div class="container">
+      <div style="text-align:center; max-width:800px; margin:0 auto 50px;">
+        <span class="badge-pill">Services & Qualité</span>
+        <h2 style="font-size:32px; margin-top:15px;">Un monte-escalier adapté à l'habitat landais</h2>
+        <p style="color:var(--text-muted); margin-top:10px;">
+          Les escaliers traditionnels en pin maritime de la forêt landaise, les tomettes ou les perrons extérieurs des villas du littoral argenté demandent une parfaite expertise. Nous sélectionnons des poseurs RGE actifs dans le 40.
+        </p>
+      </div>
+
+      <div class="grid-3">
+        <div class="card">
+          <span style="font-size:40px; display:block; margin-bottom:15px;">🛠️</span>
+          <h3 style="font-size:20px; margin-bottom:10px;">Proximité & SAV Réactif</h3>
+          <p style="font-size:16px; color:var(--text-muted); line-height:1.5;">
+            Des installateurs de proximité basés à Mont-de-Marsan, Dax et Biscarrosse pour garantir une pose en une journée et un service après-vente réactif de proximité.
+          </p>
+        </div>
+
+        <div class="card">
+          <span style="font-size:40px; display:block; margin-bottom:15px;">💶</span>
+          <h3 style="font-size:20px; margin-bottom:10px;">Aides Locales 40</h3>
+          <p style="font-size:16px; color:var(--text-muted); line-height:1.5;">
+            Bénéficiez du cumul de MaPrimeAdapt' avec l'Allocation Personnalisée d'Autonomie (APA 40) du Conseil Départemental des Landes et profitez de 25% de crédit d'impôt direct.
+          </p>
+        </div>
+
+        <div class="card">
+          <span style="font-size:40px; display:block; margin-bottom:15px;">🌲</span>
+          <h3 style="font-size:20px; margin-bottom:10px;">Respect du Bois</h3>
+          <p style="font-size:16px; color:var(--text-muted); line-height:1.5;">
+            Ancrage mécanique soigné sur les nez de marches en pin des Landes ou en bois massif. Rails extérieurs étanches tropicalisés résistants au sable et au sel littoral.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Budget Simulator -->
+  <section style="padding:80px 0; background:var(--primary-light); border-top:1.5px solid var(--border-color); border-bottom:1.5px solid var(--border-color);">
+    <div class="container two-column-layout">
+      <div>
+        <span class="badge-pill">Simulateur</span>
+        <h2 style="font-size:32px; margin-top:15px; margin-bottom:20px;">Estimez le budget de votre monte-escalier</h2>
+        <p style="color:var(--text-muted); font-size:16px; line-height:1.6; margin-bottom:20px;">
+          Déterminez en quelques secondes une estimation de reste à charge selon la configuration de vos marches et vos revenus en 2026.
+        </p>
+
+        <div style="background:white; border:1px solid var(--border-color); border-radius:15px; padding:20px; margin-bottom:25px;">
+          <h4 style="margin-bottom:10px; color:var(--primary);">Subventions moyennes d'accessibilité :</h4>
+          <ul style="list-style:none; font-size:15px; display:flex; flex-direction:column; gap:8px;">
+            <li>🌲 <strong>Revenus Très Modestes</strong> : Prise en charge jusqu'à <strong>70% HT</strong> (max 15 400 €)</li>
+            <li>🌲 <strong>Revenus Modestes</strong> : Prise en charge jusqu'à <strong>50% HT</strong> (max 11 000 €)</li>
+          </ul>
+        </div>
+      </div>
+
+      <div style="background:white; border:2px solid var(--border-color); border-radius:var(--radius-md); padding:30px; box-shadow:var(--shadow-md);">
+        <h3 style="font-size:20px; margin-bottom:20px; text-align:center; color:var(--primary);">Simulateur express</h3>
+        
+        <div class="form-group">
+          <label for="sim-stair-type">Type d'escalier</label>
+          <select id="sim-stair-type" class="form-control">
+            <option value="droit">Droit standard (Sans courbe) — dès 2 400 €</option>
+            <option value="tournant">Tournant (Sur-mesure courbe) — dès 5 200 €</option>
+            <option value="exterieur">Extérieur (Étanche & Inox) — dès 4 000 €</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="sim-income">Revenus annuels du foyer</label>
+          <select id="sim-income" class="form-control">
+            <option value="tres_modeste">Revenus Très Modestes (Aide 70% Anah)</option>
+            <option value="modeste">Revenus Modestes (Aide 50% Anah)</option>
+            <option value="intermediaire">Revenus Intermédiaires (Crédit d'impôt seul)</option>
+          </select>
+        </div>
+
+        <div style="background:var(--bg); border-radius:12px; padding:20px; text-align:center; margin-top:20px;">
+          <span style="font-size:14px; font-weight:bold; color:var(--text-muted); display:block; text-transform:uppercase;">Reste à charge estimé :</span>
+          <span id="sim-result-tag" class="price-tag" style="font-size:32px; display:block; margin:8px 0; color:var(--primary);">900 € *</span>
+          <span style="font-size:12px; color:var(--text-muted); display:block;">* Reste à charge après subvention Anah & crédit d'impôt 25%.</span>
+        </div>
+
+        <div style="text-align:center; margin-top:20px;">
+          <a href="/devis/" class="btn-primary" style="width:100%;">Estimer officiellement mes aides &rarr;</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cities Directory Link -->
+  <section style="padding:80px 0; background:white;">
+    <div class="container">
+      <div style="text-align:center; max-width:800px; margin:0 auto 50px;">
+        <span class="badge-pill">Proximité</span>
+        <h2 style="font-size:32px; margin-top:15px;">Interventions dans les Landes (40)</h2>
+        <p style="color:var(--text-muted); margin-top:10px;">
+          Nos installateurs partenaires agréés réalisent des études de faisabilité gratuites dans l'ensemble des communes du département.
+        </p>
+      </div>
+
+      <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap:15px; margin-bottom:40px;">
+        {topCommunes.map(c => (
+          <a href={`/monte-escalier-${c.slug}/`} style="text-decoration:none; display:flex; flex-direction:column; background:var(--bg); border:1.5px solid var(--border-color); padding:15px; border-radius:12px; text-align:center; color:var(--text); transition:var(--transition);">
+            <strong style="color:var(--primary); font-size:16px;">{c.nom}</strong>
+            <span style="font-size:13px; color:var(--text-muted); margin-top:4px;">Code postal {c.codePostal}</span>
+          </a>
+        ))}
+      </div>
+
+      <div style="text-align:center;">
+        <a href="/communes/" class="btn-secondary">Voir toutes les communes du 40 &rarr;</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Guides & Conseils Section -->
+  <section style="padding:80px 0; background:var(--primary-light); border-top:1.5px solid var(--border-color);">
+    <div class="container">
+      <div style="text-align:center; max-width:800px; margin:0 auto 50px;">
+        <span class="badge-pill">Dossiers & Conseils</span>
+        <h2 style="font-size:32px; margin-top:15px;">Dossiers conseils & guides d'achat des Landes</h2>
+        <p style="color:var(--text-muted); margin-top:10px;">
+          Retrouvez nos derniers dossiers complets pour bien préparer votre installation d'accessibilité dans la forêt ou sur le littoral landais.
+        </p>
+      </div>
+
+      <div class="grid-3" style="margin-bottom:40px;">
+        {recentPosts.map(post => {
+          const filename = post.file.split('/').pop() || '';
+          const slug = filename.replace('.md', '');
+          return (
+            <div class="card" style="display:flex; flex-direction:column; justify-content:space-between; padding:0; overflow:hidden; background:white; border:1px solid var(--border-color); box-shadow:var(--shadow-sm);">
+              <div style="background-color: var(--primary-light); height: 180px; display: flex; align-items: center; justify-content: center; font-size: 50px;">
+                🌲
+              </div>
+              <div style="padding:25px; flex-grow:1; display:flex; flex-direction:column; justify-content:space-between;">
+                <div>
+                  <span style="font-size:12px; color:var(--text-muted); display:block; margin-bottom:8px;">
+                    📅 {new Date(post.frontmatter.publishDate).toLocaleDateString('fr-FR', {year: 'numeric', month: 'long', day: 'numeric'})}
+                  </span>
+                  <h3 style="font-size:18px; margin-bottom:10px; line-height:1.3; color:var(--primary);">
+                    {post.frontmatter.title}
+                  </h3>
+                  <p style="font-size:14px; color:var(--text-muted); line-height:1.5; margin-bottom:20px;">
+                    {post.frontmatter.description}
+                  </p>
+                </div>
+                <div>
+                  <a href={`/guides/${slug}/`} style="font-size:14px; font-weight:bold; text-decoration:none; color:var(--secondary);">
+                    Lire la suite &rarr;
+                  </a>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      <div style="text-align:center;">
+        <a href="/guides/" class="btn-secondary">Découvrir tous nos guides &rarr;</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive script for simulator -->
+  <script>
+    const stairSelect = document.getElementById('sim-stair-type') as HTMLSelectElement | null;
+    const incomeSelect = document.getElementById('sim-income') as HTMLSelectElement | null;
+    const resultTag = document.getElementById('sim-result-tag') as HTMLSpanElement | null;
+
+    if (stairSelect && incomeSelect && resultTag) {
+      const updatePrice = () => {
+        const stair = stairSelect.value;
+        const income = incomeSelect.value;
+        
+        let basePrice = 2800;
+        if (stair === 'tournant') basePrice = 7000;
+        if (stair === 'exterieur') basePrice = 4500;
+
+        let finalPrice = basePrice;
+        
+        if (income === 'tres_modeste') {
+          const rem = basePrice * 0.3; // 70% subvention
+          finalPrice = rem * 0.75; // 25% credit impot
+        } else if (income === 'modeste') {
+          const rem = basePrice * 0.5; // 50% subvention
+          finalPrice = rem * 0.75;
+        } else {
+          finalPrice = basePrice * 0.75;
+        }
+
+        resultTag.textContent = `${Math.round(finalPrice).toLocaleString('fr-FR')} € *`;
+      };
+
+      stairSelect.addEventListener('change', updatePrice);
+      incomeSelect.addEventListener('change', updatePrice);
+      updatePrice();
+    }
+  </script>
+</Layout>

@@ -1,0 +1,121 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import StepsForm from '../../components/StepsForm.astro';
+import SchemaMarkup from '../../components/SchemaMarkup.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+
+export async function getStaticPaths() {
+  const posts = Object.values(import.meta.glob('../../content/guides/*.md', { eager: true })) as any[];
+  return posts.map(post => {
+    const filename = post.file.split('/').pop() || '';
+    const slug = filename.replace('.md', '');
+    return {
+      params: { slug },
+      props: { post }
+    };
+  });
+}
+
+const { post } = Astro.props;
+const { Content } = post;
+const { title, description, publishDate, image, author } = post.frontmatter;
+---
+
+<Layout title={`${title} — Monte-Escalier Landes`} description={description}>
+  <!-- JSON-LD structured data for article -->
+  <SchemaMarkup type="Article" data={post.frontmatter} />
+
+  <Breadcrumb items={[
+    { label: "Guides & conseils", url: "/guides/" },
+    { label: title }
+  ]} />
+
+  <!-- Article Header -->
+  <section style="background:var(--primary-light); padding:50px 0; border-bottom:1.5px solid var(--border-color);">
+    <div class="container" style="max-width:800px; text-align:center;">
+      <span class="badge-pill" style="margin-bottom:15px;">Guide Conseil 40</span>
+      <h1 style="font-size:32px; color:var(--primary); line-height:1.2; margin-bottom:15px;">{title}</h1>
+      <p style="font-size:15px; color:var(--text-muted);">
+        Publié le {new Date(publishDate).toLocaleDateString('fr-FR', {year: 'numeric', month: 'long', day: 'numeric'})} | Par {author}
+      </p>
+    </div>
+  </section>
+
+  <!-- Article Content & Sidebar -->
+  <section style="padding:60px 0; background:white;">
+    <div class="container two-column-layout" style="align-items:flex-start;">
+      
+      <!-- Main Content -->
+      <article class="markdown-body-custom" style="font-size:16px; line-height:1.7; color:var(--text);">
+        <Content />
+      </article>
+
+      <!-- Sticky Sidebar Quote Form -->
+      <aside style="position:sticky; top:100px;">
+        <h3 style="font-size:18px; color:var(--primary); margin-bottom:15px; text-align:center;">Estimer mes subventions RGE</h3>
+        <StepsForm />
+      </aside>
+
+    </div>
+  </section>
+</Layout>
+
+<style is:global>
+  /* Styling the parsed markdown elements inside the article */
+  .markdown-body-custom h2 {
+    font-size: 22px;
+    color: var(--primary);
+    margin: 35px 0 15px;
+    border-bottom: 1.5px solid var(--border-color);
+    padding-bottom: 6px;
+    font-weight: 800;
+  }
+  
+  .markdown-body-custom h3 {
+    font-size: 18px;
+    color: var(--text);
+    margin: 25px 0 10px;
+    font-weight: 700;
+  }
+  
+  .markdown-body-custom p {
+    margin-bottom: 15px;
+  }
+  
+  .markdown-body-custom ul, .markdown-body-custom ol {
+    margin-bottom: 20px;
+    padding-left: 25px;
+  }
+  
+  .markdown-body-custom li {
+    margin-bottom: 8px;
+  }
+
+  .markdown-body-custom table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 15px;
+  }
+
+  .markdown-body-custom th, .markdown-body-custom td {
+    border: 1px solid var(--border-color);
+    padding: 12px;
+    text-align: left;
+  }
+
+  .markdown-body-custom th {
+    background-color: var(--primary-light);
+    color: var(--primary);
+    font-weight: bold;
+  }
+
+  .markdown-body-custom blockquote {
+    background-color: var(--bg);
+    border-left: 4px solid var(--secondary);
+    padding: 15px 20px;
+    margin: 25px 0;
+    font-style: italic;
+    border-radius: 0 8px 8px 0;
+  }
+</style>

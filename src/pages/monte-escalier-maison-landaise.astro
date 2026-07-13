@@ -1,0 +1,60 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import StepsForm from '../components/StepsForm.astro';
+
+const activeTab = 'landaise';
+---
+<Layout title="Monte-Escalier en Maison Landaise traditionnelle (Airial) — Solutions 40" activeTab={activeTab} description="Comment adapter un monte-escalier électrique dans une maison landaise traditionnelle (airial) avec escalier ancien en pin maritime massif ?">
+  <Breadcrumb items={[{ label: "Solutions Maison Landaise" }]} />
+
+  <!-- Hero sub header -->
+  <section style="background:linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); padding: 50px 0; color: white; text-align: center;">
+    <div class="container">
+      <span class="badge-pill" style="background:rgba(255,255,255,0.1); border-color:rgba(255,255,255,0.2); color:white; margin-bottom:15px;">
+        Patrimoine & Sécurité
+      </span>
+      <h1 style="font-size:32px; color: white;">Le Monte-Escalier adapté aux Maisons Landaises (Airials)</h1>
+      <p style="font-size:18px; margin-top:10px; opacity:0.9; color: white;">
+        Aménager le confort à domicile tout en respectant l'âme et les marches en pin maritime massif de nos maisons de forêt landaise.
+      </p>
+    </div>
+  </section>
+
+  <!-- Detailed content -->
+  <section style="padding:60px 0; background:white;">
+    <div class="container two-column-layout" style="align-items:flex-start;">
+      
+      <div style="font-size:16px; line-height:1.7; color:var(--text);">
+        <h2 style="font-size:24px; color:var(--primary); margin-bottom:15px; font-weight: 800;">Le défi des escaliers rustiques en pin maritime</h2>
+        <p style="margin-bottom:15px;">
+          Les maisons landaises traditionnelles (les fameux airials de forêt ou anciennes fermes de Chalosse) possèdent un charme incomparable avec leurs structures en briquettes, leurs poutres apparentes et leurs colombages. Cependant, les escaliers y sont souvent raides, étroits (parfois moins de 70 cm de largeur) et dotés de marches en bois de pin maritime massif d'époque. 
+        </p>
+        <p style="margin-bottom:20px;">
+          L'installation d'un monte-escalier y est tout à fait réalisable grâce à des techniques modernes d'adaptation spécifique :
+        </p>
+
+        <h3 style="font-size:18px; color:var(--primary); margin-bottom:10px; font-weight: 800;">1. Modélisation photogrammétrique 3D</h3>
+        <p style="margin-bottom:20px;">
+          Nos installateurs partenaires dans les Landes emploient un équipement scanner laser pour numériser l'escalier en 3D. Le rail courbe est ensuite forgé sur mesure au millimètre près pour suivre fidèlement la trajectoire des marches, libérant un maximum de passage pour les autres usagers et s'adaptant aux virages serrés.
+        </p>
+
+        <h3 style="font-size:18px; color:var(--primary); margin-bottom:10px; font-weight: 800;">2. Ancrages respectueux du pin des Landes</h3>
+        <p style="margin-bottom:20px;">
+          Les potelets de support du rail sont fixés directement sur les marches en pin ou sur le mur. Pour les escaliers en bois de pin massif, des fixations discrètes et réparties préservent les fibres du bois sans risquer de le fendre ou de le fragiliser. Les supports s'intègrent sans dégrader la noblesse des marches.
+        </p>
+
+        <h3 style="font-size:18px; color:var(--primary); margin-bottom:10px; font-weight: 800;">3. Intégration esthétique sur mesure</h3>
+        <p style="margin-bottom:20px;">
+          Les fabricants proposent aujourd'hui des teintes de rails spécifiques assorties aux intérieurs landais (vert pin des Landes, ocre sable, crème ou marron foncé) et des fauteuils pliables extrêmement compacts (moins de 35 cm d'encombrement une fois pliés) afin de conserver tout le cachet du lieu.
+        </p>
+      </div>
+
+      <aside style="position:sticky; top:100px;">
+        <h3 style="font-size:18px; color:var(--primary); margin-bottom:15px; text-align:center;">Planifier une visite technique</h3>
+        <StepsForm />
+      </aside>
+
+    </div>
+  </section>
+</Layout>

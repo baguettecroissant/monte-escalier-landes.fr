@@ -1,0 +1,39 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+---
+<Layout title="Politique de Confidentialité — Monte-Escalier Landes" description="Consultez notre charte de protection des données à caractère personnel dans le cadre du RGPD pour les Landes (40).">
+  <Breadcrumb items={[{ label: "Politique de confidentialité" }]} />
+
+  <section style="padding: 60px 0; background: white;">
+    <div class="container" style="max-width: 800px; font-size:15px; line-height:1.6; color:var(--text-muted);">
+      <h1 style="font-size:28px; color:var(--text); margin-bottom:20px;">Politique de Confidentialité</h1>
+      
+      <h3 style="color:var(--text); margin:20px 0 10px;">1. Responsable du traitement</h3>
+      <p style="margin-bottom:15px;">
+        Le traitement des données personnelles collectées via le site <strong>monte-escalier-landes.fr</strong> est effectué par les destinataires finaux (sociétés partenaires spécialisées dans l'accessibilité senior habilitées RGE).
+      </p>
+
+      <h3 style="color:var(--text); margin:20px 0 10px;">2. Données collectées</h3>
+      <p style="margin-bottom:15px;">
+        Nous collectons les données suivantes nécessaires à la simulation et à la comparaison :<br/>
+        - Configuration technique (type d'escalier, matériau, degré d'urgence).<br/>
+        - Localisation (code postal 40, ville).<br/>
+        - Contact (civilité, nom, prénom, courriel, téléphone valide).
+      </p>
+
+      <h3 style="color:var(--text); margin:20px 0 10px;">3. Finalité de la collecte</h3>
+      <p style="margin-bottom:15px;">
+        Ces données sont utilisées uniquement pour :<br/>
+        - Estimer le montant indicatif des aides financières (Anah, APA 40).<br/>
+        - Mettre en relation l'utilisateur avec un maximum de 3 installateurs locaux certifiés RGE du 40.<br/>
+        - Suivi qualité et validation technique de la demande par téléphone.
+      </p>
+
+      <h3 style="color:var(--text); margin:20px 0 10px;">4. Durée de conservation et droits</h3>
+      <p style="margin-bottom:15px;">
+        Vos données sont conservées pour une durée maximale de 24 mois. Conformément au Règlement Général sur la Protection des Données (RGPD), vous disposez d'un droit d'accès, de rectification, de portabilité et de suppression de vos informations en contactant notre service de protection des données.
+      </p>
+    </div>
+  </section>
+</Layout>
