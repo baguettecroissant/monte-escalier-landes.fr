@@ -114,6 +114,18 @@ const topCommunes = communes && communes.length ? communes.slice(0, 8) : [];
       </div>
     </footer>
 
+    {Astro.url.pathname !== '/devis' && Astro.url.pathname !== '/devis/' && Astro.url.pathname !== '/confirmation' && Astro.url.pathname !== '/confirmation/' && (
+      <div class="mobile-sticky-cta">
+        <div class="container-sticky">
+          <div class="sticky-text">
+            <strong>Aides Landes 2026</strong>
+            <span>Jusqu'à -70% de subvention</span>
+          </div>
+          <a href="/devis/" class="btn-primary sticky-btn">Estimer aides &rarr;</a>
+        </div>
+      </div>
+    )}
+
     <ExitIntentPopup />
   </body>
 </html>
